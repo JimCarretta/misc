@@ -13,25 +13,26 @@ setwd("c:/carretta/temporary")
 
 sighting.data.iNat <- read.csv("Guadalupe_Fur_Seal.csv")
 
-
 # Load world map data
 
 world <- ne_countries(scale = "large", returnclass = "sf")
 
+target_countries <- c("British Columbia", "Canada", "Costa Rica", "El Salvador", "Guatemala", "Honduras", "Mexico", "Nicaragua", "United States of America")
+
 states <- ne_states(returnclass = "sf")
 
-target_polys <- c("Arizona", "Baja California", "Baja California Sur", "British Columbia", "California", "Chihuahua", "Coahuila", "Colorado", "Durango", "Idaho", "Montana", "Nayarit", "Nevada", 
-                  "New Mexico", "Oregon", "Sinaloa", "Sonora", "Texas", "Utah", "Washington", "Wyoming")
+target_states <- c("British Columbia", "California", "Oregon", "Washington")
 
 # Filter data for California and Western Mexico
-map_polys <- states[states$name %in% target_polys, ]
-
+state_polys <- states[states$name %in% target_states, ]
+country_polys <- world[world$name %in% target_countries, ]
 
 # Plot map 
 p <- ggplot() +
-  geom_sf(data = map_polys, color = "black", fill = "beige", size = 0.1) +
-  coord_sf(xlim = c(-145, -85), ylim = c(8,49), expand=FALSE) +
-  geom_point(data=sighting.data.iNat, aes(x=longitude, y=latitude)) +
+  geom_sf(data = country_polys, color = "black", fill = "beige", size = 0.1) +
+  geom_sf(data = state_polys, color = "black", fill = "beige", size = 0.1) +
+  coord_sf(xlim = c(-145, -100), ylim = c(15,50), expand=FALSE) +
+  geom_point(data=sighting.data.iNat, aes(x=longitude, y=latitude, color=Source)) +
   theme_classic() +
   theme(panel.background = element_rect(fill="lightblue")) +
   labs(title="Guadalupe Fur Seal Distribution", x="Longitude", y="Latitude") +
