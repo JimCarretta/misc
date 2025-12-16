@@ -1,6 +1,6 @@
 # Summarize serious injury and mortality data
 # Note this script produces several in-console tables and CSVs that should be checked by eye.
-# Jim Carretta 12-11-2025
+# Jim Carretta 12-16-2025
 # Updated to fully categorize all systematic (observer program, research-related, authorized removal) records as such
 # Input file renamed "HCMSI_Records_SWFSC_Main.xlsx" in Sep 2025
   
@@ -250,8 +250,19 @@
 	LOF.changed <- x[which(x$COUNT.AGAINST.LOF != data.5yr$COUNT.AGAINST.LOF),]
 	PBR.changed <- x[which(x$COUNT.AGAINST.PBR != data.5yr$COUNT.AGAINST.PBR),]
 	MSI.changed <- x[which(x$MSI.Value != data.5yr$MSI.Value),]
+
+	# Tabulate records where LOF field was amended.
+	# A sampling of LOF.changed records indicates these are consistent with treatment by Carretta
+	# in SARs and MSI reports and therefore, the "HCMSI_Records_SWFSC_Main.xlsx" database can be amended with these changes.
 	
 	table(LOF.changed$Species, LOF.changed$Interaction.Type, LOF.changed$COUNT.AGAINST.LOF)
+	table(LOF.changed$Interaction.Type, LOF.changed$COUNT.AGAINST.LOF, LOF.changed$MSI.Value)
+	
+	# changes to PBR also look good. n=19
+	table(PBR.changed$Species, PBR.changed$MSI.Value, PBR.changed$COUNT.AGAINST.PBR)
+	
+	# and the 3 MSI.changed records are consistent with error check applications and final injury assessments
+	MSI.changed
 	
 # most of the LOF.changed cases involve generic fisheries that are likely commercial in origin,
 # based on the ratio of known commercial to recreational footprints by gear type. Examples:
